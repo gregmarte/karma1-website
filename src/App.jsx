@@ -1,9 +1,16 @@
-
 import React, { useState, useEffect } from 'react';
+import PrivacyPolicy from './PrivacyPolicy';
+import TermsOfService from './TermsOfService';
 
 const App = () => {
+
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState("");
+  const [messageType, setMessageType] = useState("info");
+  const [form, setForm] = useState({ name: "", email: "", message: "" });
+  const [submitting, setSubmitting] = useState(false);
+  const [showPrivacy, setShowPrivacy] = useState(false);
+  const [showTerms, setShowTerms] = useState(false);
 
   useEffect(() => {
     setLoading(true);
@@ -15,31 +22,79 @@ const App = () => {
 
   const showMessage = (msg, type = 'info') => {
     setMessage(msg);
-    setTimeout(() => setMessage(''), 3000);
+    setMessageType(type);
+    // Message will stay until clicked
   };
 
-  const handleContactSubmit = (e) => {
-    e.preventDefault();
-    showMessage('Your message has been sent! We will get back to you soon.', 'success');
-    e.target.reset();
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
   };
+
+  const handleContactSubmit = async (e) => {
+    e.preventDefault();
+    setSubmitting(true);
+    try {
+      // TODO: Replace with your actual API Gateway endpoint URL
+      const response = await fetch("YOUR_API_GATEWAY_URL", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      if (!response.ok) throw new Error("Failed to send message");
+      showMessage("Your message has been sent! We will get back to you soon.", "success");
+      setForm({ name: "", email: "", message: "" });
+    } catch (err) {
+      showMessage("There was an error sending your message. Please email first.last@gmail.com directly.", "error");
+    } finally {
+      setSubmitting(false);
+    }
+  };
+  if (showPrivacy) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-purple-50 to-indigo-100 font-inter text-gray-800">
+        <button
+          className="fixed top-4 right-4 z-50 bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded shadow"
+          onClick={() => setShowPrivacy(false)}
+        >
+          Close
+        </button>
+        <PrivacyPolicy />
+      </div>
+    );
+  }
+  if (showTerms) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-purple-50 to-indigo-100 font-inter text-gray-800">
+        <button
+          className="fixed top-4 right-4 z-50 bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded shadow"
+          onClick={() => setShowTerms(false)}
+        >
+          Close
+        </button>
+        <TermsOfService />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 to-indigo-100 font-inter text-gray-800">
       {/* Loading/Message Indicator */}
-      {loading && (
-        <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50">
-          <div className="text-white text-xl">Loading...</div>
-        </div>
-      )}
-      {message && (
-        <div
-          className="fixed top-4 left-1/2 -translate-x-1/2 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 cursor-pointer"
-          onClick={() => setMessage('')}
-        >
-          {message}
-        </div>
-      )}
+      <>
+        {loading && (
+          <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50">
+            <div className="text-white text-xl">Loading...</div>
+          </div>
+        )}
+        {message && (
+          <div
+            className={`fixed top-4 left-1/2 -translate-x-1/2 ${messageType === 'error' ? 'bg-red-500' : 'bg-green-500'} text-white px-6 py-3 rounded-lg shadow-lg z-50 cursor-pointer`}
+            onClick={() => setMessage("")}
+          >
+            {message}
+          </div>
+        )}
+      </>      
 
       {/* Header */}
       <header className="bg-white shadow-sm py-4 px-6 md:px-12 sticky top-0 z-40">
@@ -72,7 +127,7 @@ const App = () => {
             position: 'absolute',
             right: '2%',
             bottom: '2%',
-            width: '25%',
+            width: '15%',
             height: 'auto',
             opacity: 0.7,
             pointerEvents: 'none',
@@ -100,7 +155,7 @@ const App = () => {
         <div className="container mx-auto max-w-4xl text-center">
           <h2 className="text-3xl md:text-4xl font-bold text-purple-800 mb-6">About Karma Zero Yoga</h2>
           <p className="text-lg text-gray-700 leading-relaxed mb-8">
-            At Karma Zero Yoga, we believe that yoga is for everyone. Our mission is to create a welcoming and supportive environment where individuals of all levels can explore the transformative power of yoga. We focus on personalized instruction, mindful movement, and karmic well-being.
+            At Karma Zero Yoga, we believe that yoga is for everyone. Our mission is to create a welcoming and supportive environment where individuals of all levels can explore the transformative power of yoga. We connect breath with alignment, and mindful movement with karmic well-being.
           </p>
           <p className="text-lg text-gray-700 leading-relaxed">
             Our experienced instructors are dedicated to guiding you through practices that enhance physical strength, mental clarity, and emotional balance. Whether you're a complete beginner or an experienced yogi, we're here to help you deepen your practice and find serenity in your daily life.
@@ -134,11 +189,11 @@ const App = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.653-.189-1.26-0.51-1.802M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.653.189-1.26.51-1.802M12 14a4 4 0 100-8 4 4 0 000 8zm0 0v.01"></path>
                 </svg>
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-3">Group Classes</h3>
+              <h3 className="text-xl font-semibold text-gray-900 mb-3">Studio Classes</h3>
               <p className="text-gray-700">
-                Join our vibrant community classes, offering various styles like Vinyasa, Hatha, Restorative, and Power Yoga for all levels.
+                Partnering with Skanda Yoga to bring an Ashtanga based, Power Vinyasa. Build your daily practice in studio.
               </p>
-              <p className="text-purple-600 font-bold mt-4">$20 - $30 per class</p>
+              <p className="text-purple-600 font-bold mt-4">Drop in $30 per class, monthly subscriptions available</p>
             </div>
 
             {/* Service Card 3 */}
@@ -152,7 +207,7 @@ const App = () => {
               <p className="text-gray-700">
                 Deepen your practice with our specialized workshops and immersive retreats, focusing on specific aspects of yoga and wellness.
               </p>
-              <p className="text-purple-600 font-bold mt-4">Prices Vary</p>
+              <p className="text-purple-600 font-bold mt-4">Under development</p>
             </div>
           </div>
         </div>
@@ -175,40 +230,25 @@ const App = () => {
               <tbody>
                 <tr className="border-b border-gray-200 hover:bg-gray-50">
                   <td className="py-3 px-4">Monday</td>
-                  <td className="py-3 px-4">9:00 AM - 10:00 AM</td>
-                  <td className="py-3 px-4">Morning Vinyasa Flow</td>
-                  <td className="py-3 px-4">Sarah J.</td>
+                  <td className="py-3 px-4">6:30 PM - 7:30 PM</td>
+                  <td className="py-3 px-4"><a href="https://firstmiami.churchcenter.com/calendar/event/172400079" target="_blank" rel="noopener noreferrer" className="text-purple-700 underline hover:text-purple-900">Brickell Soul</a>, Vinyasa</td>
+                  <td className="py-3 px-4">Greg M.</td>
                 </tr>
                 <tr className="border-b border-gray-200 hover:bg-gray-50 bg-gray-50">
                   <td className="py-3 px-4">Tuesday</td>
-                  <td className="py-3 px-4">6:00 PM - 7:00 PM</td>
-                  <td className="py-3 px-4">Restorative Yoga</td>
-                  <td className="py-3 px-4">David L.</td>
-                </tr>
-                <tr className="border-b border-gray-200 hover:bg-gray-50">
-                  <td className="py-3 px-4">Wednesday</td>
-                  <td className="py-3 px-4">10:30 AM - 11:30 AM</td>
-                  <td className="py-3 px-4">Hatha Basics</td>
-                  <td className="py-3 px-4">Maria P.</td>
-                </tr>
-                <tr className="border-b border-gray-200 hover:bg-gray-50 bg-gray-50">
-                  <td className="py-3 px-4">Thursday</td>
-                  <td className="py-3 px-4">7:00 PM - 8:00 PM</td>
-                  <td className="py-3 px-4">Power Yoga</td>
-                  <td className="py-3 px-4">Sarah J.</td>
-                </tr>
-                <tr className="border-b border-gray-200 hover:bg-gray-50">
-                  <td className="py-3 px-4">Saturday</td>
-                  <td className="py-3 px-4">9:30 AM - 10:30 AM</td>
-                  <td className="py-3 px-4">Weekend Flow</td>
-                  <td className="py-3 px-4">David L.</td>
+                  <td className="py-3 px-4">8:00 PM - 9:15 PM</td>
+                  <td className="py-3 px-4"><a href="https://www.skandayoga.com/classes-schedule/" target="_blank" rel="noopener noreferrer" className="text-purple-700 underline hover:text-purple-900">Skanda</a>, Level 1</td>
+                  <td className="py-3 px-4">Greg M.</td>
                 </tr>
               </tbody>
             </table>
           </div>
-          <p className="mt-6 text-gray-600">
-            *Private sessions are available by appointment. Please contact us to book.
-          </p>
+          <div className="mt-6 text-gray-600">
+            <p>*Private sessions are available by appointment.</p>
+            <p>
+              <a href="https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ1EQgvCM10sxu57DSoDdtclFS2szSmTzpz5beLK4NYECpxVFOmvPZfm_sp-SXJ_FVdCfGOIPRo9?gv=true" target="_blank" rel="noopener noreferrer" className="text-purple-700 underline hover:text-purple-900">Book your 15 minute, no-commitment, introductory call here.</a>
+            </p>
+          </div>
         </div>
       </section>
 
@@ -222,25 +262,25 @@ const App = () => {
               <p className="text-lg italic text-gray-700 mb-4">
                 "Whoohoo you are an excellent teacher!"
               </p>
-              <p className="font-semibold text-gray-900">- Jason Pereira.</p>
+              <p className="font-semibold text-gray-900">- Jason P.</p>
               <p className="text-sm text-gray-600">Private Session Client</p>
             </div>
 
             {/* Testimonial Card 2 */}
             <div className="bg-white p-6 rounded-lg shadow-md border-t-4 border-purple-500">
               <p className="text-lg italic text-gray-700 mb-4">
-                "Joy."
+                "..."
               </p>
-              <p className="font-semibold text-gray-900">- TBA</p>
+              <p className="font-semibold text-gray-900">- TBD</p>
               <p className="text-sm text-gray-600">Group Class Member</p>
             </div>
 
             {/* Testimonial Card 3 */}
             <div className="bg-white p-6 rounded-lg shadow-md border-t-4 border-purple-500">
               <p className="text-lg italic text-gray-700 mb-4">
-                "Healing"
+                "..."
               </p>
-              <p className="font-semibold text-gray-900">- TBA</p>
+              <p className="font-semibold text-gray-900">- TBD</p>
               <p className="text-sm text-gray-600">Private Session Client</p>
             </div>
           </div>
@@ -251,30 +291,25 @@ const App = () => {
       <section id="payments" className="py-16 px-6 md:px-12 bg-white">
         <div className="container mx-auto max-w-4xl text-center">
           <h2 className="text-3xl md:text-4xl font-bold text-purple-800 mb-6">Payment Information</h2>
-          <p className="text-lg text-gray-700 leading-relaxed mb-8">
-            We currently accept payments via Venmo.
-          </p>
+          <p className="text-lg text-gray-700 leading-relaxed mb-8"></p>
           <div className="bg-purple-50 p-8 rounded-lg shadow-inner">
             <h3 className="text-2xl font-semibold text-purple-700 mb-4">How to Pay with Venmo</h3>
             <p className="text-gray-700 mb-4">
-              To make a payment for private sessions or class packages, please use our Venmo handle:
+              To make a payment for private session, please use our Venmo handle:
             </p>
             <p className="text-3xl font-bold text-purple-800 mb-6">@KarmaZeroYoga</p>
             <p className="text-gray-700 mb-4">
               You can also scan the QR code below using your Venmo app:
             </p>
             <img
-              src="https://placehold.co/200x200/6b46c1/ffffff?text=Venmo+QR+Code"
+              src="/img/venmo_qrcode.png"
               alt="Venmo QR Code"
-              className="mx-auto mb-6 rounded-lg shadow-md"
-              onError={(e) => { e.target.onerror = null; e.target.src="https://placehold.co/200x200/cccccc/333333?text=QR+Code+Unavailable"; }}
+              className="mx-auto mb-6 rounded-lg shadow-md w-52 h-52 object-contain"      
             />
             <p className="text-sm text-gray-600">
               Please include your name and the service you are paying for in the Venmo note.
             </p>
-            <p className="mt-6 text-purple-700 font-semibold">
-              For security and direct integration, a full e-commerce solution with Venmo as a payment option would require a payment gateway (e.g., PayPal, Stripe) that supports Venmo, along with a secure backend to process transactions. This current setup provides a direct payment instruction.
-            </p>
+            <p className="mt-6 text-purple-700 font-semibold"></p>
           </div>
         </div>
       </section>
@@ -288,13 +323,15 @@ const App = () => {
               <label htmlFor="name" className="block text-gray-700 text-sm font-bold mb-2">
                 Name
               </label>
-              <input
+            <input
                 type="text"
                 id="name"
                 name="name"
                 className="shadow appearance-none border rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                 placeholder="Your Name"
                 required
+                value={form.name}
+                onChange={handleInputChange}
               />
             </div>
             <div className="mb-6">
@@ -308,6 +345,8 @@ const App = () => {
                 className="shadow appearance-none border rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                 placeholder="your@example.com"
                 required
+                value={form.email}
+                onChange={handleInputChange}
               />
             </div>
             <div className="mb-6">
@@ -321,14 +360,17 @@ const App = () => {
                 className="shadow appearance-none border rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                 placeholder="Your message here..."
                 required
+                value={form.message}
+                onChange={handleInputChange}
               ></textarea>
             </div>
             <div className="flex items-center justify-center">
               <button
                 type="submit"
-                className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-6 rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+                className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-6 rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 disabled:opacity-60"
+                disabled={submitting}
               >
-                Send Message
+                {submitting ? "Sending..." : "Send Message"}
               </button>
             </div>
           </form>
@@ -340,11 +382,21 @@ const App = () => {
         <div className="container mx-auto text-center md:flex md:justify-between md:items-center">
           <div className="mb-4 md:mb-0">
             <h3 className="text-xl font-bold mb-2">Karma Zero Yoga</h3>
-            <p className="text-sm">© 2024 All rights reserved.</p>
+            <p className="text-sm">© {new Date().getFullYear()} All rights reserved.</p>
           </div>
           <div className="flex justify-center space-x-6">
-            <a href="#" className="text-gray-400 hover:text-white transition-colors">Privacy Policy</a>
-            <a href="#" className="text-gray-400 hover:text-white transition-colors">Terms of Service</a>
+            <button
+              className="text-gray-400 hover:text-white transition-colors underline"
+              onClick={() => setShowPrivacy(true)}
+            >
+              Privacy Policy
+            </button>
+            <button
+              className="text-gray-400 hover:text-white transition-colors underline"
+              onClick={() => setShowTerms(true)}
+            >
+              Terms of Service
+            </button>
           </div>
         </div>
       </footer>
