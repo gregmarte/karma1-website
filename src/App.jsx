@@ -35,7 +35,7 @@ const App = () => {
     e.preventDefault();
     setSubmitting(true);
     try {
-      // TODO: Replace with your actual API Gateway endpoint URL
+      // TODO: Replace with an actual API Gateway endpoint URL
       const response = await fetch("YOUR_API_GATEWAY_URL", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -45,7 +45,7 @@ const App = () => {
       showMessage("Your message has been sent! We will get back to you soon.", "success");
       setForm({ name: "", email: "", message: "" });
     } catch (err) {
-      showMessage("There was an error sending your message. Please email first.last@gmail.com directly.", "error");
+      showMessage("Sorry, message not delivered. Please reach out on Instagram: miamigreg.yoga", "error");
     } finally {
       setSubmitting(false);
     }
@@ -88,7 +88,7 @@ const App = () => {
         )}
         {message && (
           <div
-            className={`fixed top-4 left-1/2 -translate-x-1/2 ${messageType === 'error' ? 'bg-red-500' : 'bg-green-500'} text-white px-6 py-3 rounded-lg shadow-lg z-50 cursor-pointer`}
+            className={`fixed top-4 left-1/2 -translate-x-1/2 ${messageType === 'error' ? 'bg-orange-500' : 'bg-green-500'} text-white px-6 py-3 rounded-lg shadow-lg z-50 cursor-pointer`}
             onClick={() => setMessage("")}
           >
             {message}
@@ -121,7 +121,7 @@ const App = () => {
       <section className="relative h-[50vh] flex items-center justify-center text-center bg-purple-700">
         {/* Lotus flower image, 25% of section area, bottom left corner, using public folder for reliability */}
         <img
-          src="/img/lotusFlower.png"
+          src="./img/lotusFlower.png"
           alt="Lotus Flower"
           style={{
             position: 'absolute',
@@ -302,7 +302,7 @@ const App = () => {
               You can also scan the QR code below using your Venmo app:
             </p>
             <img
-              src="/img/venmo_qrcode.png"
+              src="./img/venmo_qrcode.png"
               alt="Venmo QR Code"
               className="mx-auto mb-6 rounded-lg shadow-md w-52 h-52 object-contain"      
             />

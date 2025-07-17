@@ -12,12 +12,18 @@ A fresh React + Vite + Tailwind CSS project for the Karma Zero Yoga website.
    ```sh
    npm run dev
    ```
+3. Build assets in /dist
+   ```sh
+   npm run build
+   ```   
+4. To verify assets
+   ```sh
+   cd dist  #directory with index.html
+   python3 -m http.server
+   ```
 
 ## Features
 - React 18
 - Vite for fast development
 - Tailwind CSS for styling
 
----
-
-You can now start building your yoga website!
