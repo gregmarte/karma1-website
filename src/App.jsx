@@ -262,26 +262,26 @@ const App = () => {
               <p className="text-lg italic text-gray-700 mb-4">
                 "Whoohoo you are an excellent teacher!"
               </p>
-              <p className="font-semibold text-gray-900">- Jason P.</p>
+              <p className="font-semibold text-gray-900"></p>
               <p className="text-sm text-gray-600">Private Session Client</p>
             </div>
 
             {/* Testimonial Card 2 */}
             <div className="bg-white p-6 rounded-lg shadow-md border-t-4 border-purple-500">
               <p className="text-lg italic text-gray-700 mb-4">
-                "..."
+                "Well paced and good and clear instructions given so that a beginner like me could follow along and not be confused"
               </p>
-              <p className="font-semibold text-gray-900">- TBD</p>
-              <p className="text-sm text-gray-600">Group Class Member</p>
+              <p className="font-semibold text-gray-900"></p>
+              <p className="text-sm text-gray-600">Skanda Yoga® Power – Level 1 (Beginner)</p>
             </div>
 
             {/* Testimonial Card 3 */}
             <div className="bg-white p-6 rounded-lg shadow-md border-t-4 border-purple-500">
               <p className="text-lg italic text-gray-700 mb-4">
-                "..."
+                
               </p>
-              <p className="font-semibold text-gray-900">- TBD</p>
-              <p className="text-sm text-gray-600">Private Session Client</p>
+              <p className="font-semibold text-gray-900"></p>
+              <p className="text-sm text-gray-600"></p>
             </div>
           </div>
         </div>
