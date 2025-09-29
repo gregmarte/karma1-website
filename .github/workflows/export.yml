@@ -70,5 +70,6 @@ jobs:
           title: "bot: karma website update"
           body: "bot: updates are pushed from karma website when rebuilt."
           token: ${{ secrets.DESTINATION_REPO_WEBSITE_PAT }}
+          delete-branch: true   
 
           
