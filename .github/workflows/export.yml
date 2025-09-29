@@ -29,17 +29,9 @@ jobs:
           token: ${{ secrets.DESTINATION_REPO_WEBSITE_PAT }}
           path: gregmarte.github.io
 
-      - name: Debug
-        run: pwd
-
-      - name: Debug2
-        run: ls
-
       - name: Create branch
         run: |
           cd gregmarte.github.io
-          git config user.name 'github-actions[bot]'
-          git config user.email 'github-actions[bot]@users.noreply.github.com'
           git checkout -b $BRANCH_NAME
           cd ..
 
