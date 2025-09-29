@@ -11,6 +11,10 @@ on:
 jobs:
   copy_karmazero_to_gregmarte_github_io:
     runs-on: ubuntu-latest
+
+    env:
+      BRANCH_NAME: karma-update-bot
+
     steps:
       - name: Checkout Source Repository
         uses: actions/checkout@v4
@@ -36,7 +40,7 @@ jobs:
           cd gregmarte.github.io
           git config user.name 'github-actions[bot]'
           git config user.email 'github-actions[bot]@users.noreply.github.com'
-          git checkout -b karma-update-bot
+          git checkout -b $BRANCH_NAME
           cd ..
 
       - name: Delete the previous resources
@@ -53,7 +57,7 @@ jobs:
           cd gregmarte.github.io
           git add .
           git commit -m 'chore: Update website files from karma repo' || echo "No changes to commit"
-          git push
+          git push origin $BRANCH_NAME
           cd ..
         env: 
           GITHUB_TOKEN: ${{ secrets.DESTINATION_REPO_WEBSITE_PAT }}
@@ -61,7 +65,7 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6
         with:
-          branch: karma-update-bot
+          branch: $BRANCH_NAME
           base: main
           commit-message: "bot: karma website update"
           title: "bot: karma website update"
