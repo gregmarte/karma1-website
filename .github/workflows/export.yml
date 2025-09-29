@@ -1,4 +1,4 @@
-name: Sync File to Public Website
+name: Sync Files to Public Website
 
 on:
   push:
@@ -31,6 +31,14 @@ jobs:
       - name: Debug2
         run: ls
 
+      - name: Create branch
+        run: |
+          cd gregmarte.github.io
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          git checkout -b karma-update-bot
+          cd ..
+
       - name: Delete the previous resources
         run: rm -r gregmarte.github.io/yoga/*
 
@@ -43,13 +51,21 @@ jobs:
       - name: Commit and Push Changes
         run: |
           cd gregmarte.github.io
-          git config user.name 'github-actions[bot]'
-          git config user.email 'github-actions[bot]@users.noreply.github.com'
           git add .
           git commit -m 'chore: Update website files from karma repo' || echo "No changes to commit"
           git push
           cd ..
         env: 
           GITHUB_TOKEN: ${{ secrets.DESTINATION_REPO_WEBSITE_PAT }}
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          branch: karma-update-bot
+          base: main
+          commit-message: "bot: karma website update"
+          title: "bot: karma website update"
+          body: "bot: updates are pushed from karma website when rebuilt."
+          token: ${{ secrets.DESTINATION_REPO_WEBSITE_PAT }}
 
           
