@@ -6,7 +6,6 @@ on:
       - main
     paths:
       - 'dist/**'
-      - '.github/workflows/export.yml'
 
 jobs:
   copy_karmazero_to_gregmarte_github_io:
