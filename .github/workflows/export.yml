@@ -38,7 +38,7 @@ jobs:
         run: cp -r karma1-website/dist/* gregmarte.github.io/yoga/
 
       - name: Rename index
-        run: mv gregmarte.github.io/yoga/index.html gregmarte.github.io/yoga/index/karmazero.html
+        run: mv gregmarte.github.io/yoga/index.html gregmarte.github.io/yoga/karmazero.html
 
       - name: Commit and Push Changes
         run: |
