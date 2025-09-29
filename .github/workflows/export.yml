@@ -6,6 +6,7 @@ on:
       - test
     paths:
       - 'dist/**'
+      - '.github/workflows/export.yml'
 
 jobs:
   sync:
@@ -21,17 +22,19 @@ jobs:
         with:
           repository: gregmarte/gregmarte.github.io
           token: ${{ secrets.DESTINATION_REPO_WEBSITE_PAT }}
-          path: yoga
+
+      - name: Delete the previous resources
+        run: rm -r gregmarte.github.io/yoga/*
 
       - name: Copy the Directory
-        run: cp dist/* yoga
+        run: cp karma1-website/dist/* gregmarte.github.io/yoga/
 
       - name: Rename index
-        run: mv -f index.html karmazero.html
+        run: mv index.html karmazero.html
 
       - name: Commit and Push Changes
         run: |
-          cd gregmarte/gregmarte.github.io
+          cd gregmarte.github.io
           git config user.name 'github-actions[bot]'
           git config user.email 'github-actions[bot]@users.noreply.github.com'
           git add .
