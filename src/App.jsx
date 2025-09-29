@@ -260,10 +260,10 @@ const App = () => {
             {/* Testimonial Card 1 */}
             <div className="bg-white p-6 rounded-lg shadow-md border-t-4 border-purple-500">
               <p className="text-lg italic text-gray-700 mb-4">
-                "Whoohoo you are an excellent teacher!"
+                
               </p>
               <p className="font-semibold text-gray-900"></p>
-              <p className="text-sm text-gray-600">Private Session Client</p>
+              <p className="text-sm text-gray-600"></p>
             </div>
 
             {/* Testimonial Card 2 */}
