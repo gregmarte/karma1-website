@@ -49,3 +49,7 @@ jobs:
           git commit -m 'chore: Update website files from karma repo' || echo "No changes to commit"
           git push
           cd ..
+        env: 
+          GITHUB_TOKEN: ${{ secrets.DESTINATION_REPO_WEBSITE_PAT }}
+
+          
