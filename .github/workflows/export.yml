@@ -3,9 +3,9 @@ name: Sync File to Public Website
 on:
   push:
     branches:
-      - main
+      - test
     paths:
-      - 'dist'
+      - 'dist/**'
 
 jobs:
   sync:
