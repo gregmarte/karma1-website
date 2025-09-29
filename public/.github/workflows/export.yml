@@ -1,0 +1,39 @@
+name: Sync File to Public Website
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'dist'
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Source Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Checkout Destination Repository
+        uses: actions/checkout@v4
+        with:
+          repository: gregmarte/gregmarte.github.io
+          token: ${{ secrets.DESTINATION_REPO_WEBSITE_PAT }}
+          path: yoga
+
+      - name: Copy the Directory
+        run: cp dist/* yoga
+
+      - name: Rename index
+        run: mv -f index.html karmazero.html
+
+      - name: Commit and Push Changes
+        run: |
+          cd gregmarte/gregmarte.github.io
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          git add .
+          git commit -m 'chore: Update website files from karma repo' || echo "No changes to commit"
+          git push
