@@ -24,8 +24,6 @@ const TermsOfService = () => (
       <p className="mb-4 text-gray-700">Karma Zero Yoga is not liable for any injuries or damages resulting from participation in our classes or use of our website. Always consult a physician before beginning any exercise program.</p>
       <h2 className="text-2xl font-semibold text-purple-700 mt-8 mb-2">Changes to Terms</h2>
       <p className="mb-4 text-gray-700">We may update these Terms of Service from time to time. Continued use of our website and services constitutes acceptance of the revised terms.</p>
-      <h2 className="text-2xl font-semibold text-purple-700 mt-8 mb-2">Contact Us</h2>
-      <p className="mb-4 text-gray-700">If you have any questions about these Terms, please contact us at <a href="mailto:first.last+terms072025@gmail.com" className="text-purple-700 underline">first.last+terms072025@gmail.com</a>.</p>
       <p className="mt-8 text-gray-500 text-sm text-center">Thank you for choosing Karma Zero Yoga.</p>
     </div>
   </div>

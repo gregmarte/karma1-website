@@ -1,39 +1,67 @@
-name: Sync File to Public Website
+name: Sync Files to Public Website
 
 on:
   push:
     branches:
       - main
     paths:
-      - 'dist'
+      - 'dist/**'
 
 jobs:
-  sync:
+  copy_karmazero_to_gregmarte_github_io:
     runs-on: ubuntu-latest
+
+    env:
+      BRANCH_NAME: karma-update-bot
+
     steps:
       - name: Checkout Source Repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          path: karma1-website
 
       - name: Checkout Destination Repository
         uses: actions/checkout@v4
         with:
           repository: gregmarte/gregmarte.github.io
           token: ${{ secrets.DESTINATION_REPO_WEBSITE_PAT }}
-          path: yoga
+          path: gregmarte.github.io
+
+      - name: Create branch
+        run: |
+          cd gregmarte.github.io
+          git checkout -b $BRANCH_NAME
+          cd ..
+
+      - name: Delete the previous resources
+        run: rm -r gregmarte.github.io/yoga/*
 
       - name: Copy the Directory
-        run: cp dist/* yoga
+        run: cp -r karma1-website/dist/* gregmarte.github.io/yoga/
 
       - name: Rename index
-        run: mv -f index.html karmazero.html
+        run: mv gregmarte.github.io/yoga/index.html gregmarte.github.io/yoga/karmazero.html
 
       - name: Commit and Push Changes
         run: |
-          cd gregmarte/gregmarte.github.io
-          git config user.name 'github-actions[bot]'
-          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          cd gregmarte.github.io
           git add .
           git commit -m 'chore: Update website files from karma repo' || echo "No changes to commit"
-          git push
+          git push origin $BRANCH_NAME
+        env: 
+          GITHUB_TOKEN: ${{ secrets.DESTINATION_REPO_WEBSITE_PAT }}
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          path: gregmarte.github.io
+          branch: ${{ env.BRANCH_NAME }} 
+          base: main
+          commit-message: "bot: karma website update"
+          title: "bot: karma website update"
+          body: "bot: updates are pushed from karma website when rebuilt."
+          token: ${{ secrets.DESTINATION_REPO_WEBSITE_PAT }}
+          delete-branch: true   
+
+          
