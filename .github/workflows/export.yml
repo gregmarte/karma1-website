@@ -3,7 +3,7 @@ name: Sync Files to Public Website
 on:
   push:
     branches:
-      - test
+      - main
     paths:
       - 'dist/**'
       - '.github/workflows/export.yml'
