@@ -35,7 +35,7 @@ jobs:
         run: rm -r gregmarte.github.io/yoga/*
 
       - name: Copy the Directory
-        run: cp karma1-website/dist/* gregmarte.github.io/yoga/
+        run: cp -r karma1-website/dist/* gregmarte.github.io/yoga/
 
       - name: Rename index
         run: mv gregmarte.github.io/yoga/index.html gregmarte.github.io/yoga/index/karmazero.html
