@@ -53,9 +53,16 @@ jobs:
         env: 
           GITHUB_TOKEN: ${{ secrets.DESTINATION_REPO_WEBSITE_PAT }}
 
+      - name: Debug001
+        run: pwd
+
+      - name: Debug002
+        run: ls
+
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6
         with:
+          path: gregmarte.github.io
           branch: $BRANCH_NAME
           base: main
           commit-message: "bot: karma website update"
