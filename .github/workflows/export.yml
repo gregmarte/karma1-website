@@ -16,13 +16,14 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          path: karma1-website
 
       - name: Checkout Destination Repository
         uses: actions/checkout@v4
         with:
           repository: gregmarte/gregmarte.github.io
           token: ${{ secrets.DESTINATION_REPO_WEBSITE_PAT }}
-          path: ./gregmarte.github.io
+          path: gregmarte.github.io
 
       - name: Debug
         run: pwd
@@ -37,7 +38,7 @@ jobs:
         run: cp karma1-website/dist/* gregmarte.github.io/yoga/
 
       - name: Rename index
-        run: mv index.html karmazero.html
+        run: mv gregmarte.github.io/yoga/index.html gregmarte.github.io/yoga/index/karmazero.html
 
       - name: Commit and Push Changes
         run: |
@@ -47,3 +48,4 @@ jobs:
           git add .
           git commit -m 'chore: Update website files from karma repo' || echo "No changes to commit"
           git push
+          cd ..
